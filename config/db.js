@@ -21,6 +21,11 @@ const testConnection = async () => {
   try {
     await sequelize.authenticate();
     console.log('✅ - Database connection established successfully.');
+
+    // create tables and syncronize
+    await sequelize.sync({ alter: true }); // or { force: true } to recreate tables
+    console.log('✅ Tables synced!');
+
   } catch (err) {
     console.error('❌ - Unable to connect to the database:', err);
   }
