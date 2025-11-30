@@ -2,7 +2,7 @@
 import express from "express";
 import loginController from "../controllers/login-controller.js"
 import authTokenValidation from "../middleware/auth-token-validation.js"
-import { setJWT } from "../utils/jwt-token.js"
+import User from "../models/User.js";
 
 const router = express.Router();
 
