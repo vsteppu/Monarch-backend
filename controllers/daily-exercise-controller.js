@@ -13,7 +13,7 @@ export const getExercises = async(req, res) => {
         return exercises
     } catch (err) {
         console.error(err);
-        res.status(500).json({ success: false, message: "Server error" });
+        res.status(500).json({ success: false, message: "Server error #1" });
     }
 };
 
@@ -35,7 +35,7 @@ export const postExercises = async(data) => {
         return addDailyExercises
     } catch (err) {
         console.error(err);
-        res.status(500).json({ success: false, message: "Server error" });
+        res.status(500).json({ success: false, message: "Server error #2" });
     }
 };
 
@@ -52,6 +52,6 @@ export const deleteAllExercises = async(id) => {
         return await DailyExercise.destroy({ truncate: true });
     } catch (err) {
         console.error(err);
-        res.status(500).json({ success: false, message: "Server error" });
+        res.status(500).json({ success: false, message: "Server error #3" });
     }
 };

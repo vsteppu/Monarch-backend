@@ -3,12 +3,7 @@ import dotenv from "dotenv"
 import cors from "cors"
 import cookieParser from "cookie-parser"
 
-import sequelize from "./config/db.js"
-import getUser from "./routes/user.js"
-import registerUser from "./routes/register.js"
 import authUser from "./routes/auth.js"
-import userProfile from "./routes/profile.js"
-import tokenValidation from "./routes/token-validation.js"
 import dailyExercises from "./routes/daily-exercise.js"
 
 dotenv.config();

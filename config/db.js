@@ -17,7 +17,6 @@ const sequelize = new Sequelize(
   }
 );
 
-/* Logic to test database
 const testConnection = async () => {
   try {
     await sequelize.authenticate();
@@ -27,5 +26,4 @@ const testConnection = async () => {
   }
 };
 testConnection();
-*/
 export default sequelize;
