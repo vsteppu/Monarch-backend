@@ -43,7 +43,7 @@ app.delete("/delete-all-exercises", dailyExercises);
 //app.post("/profile", userProfile);
 //app.post("/token-validation", tokenValidation);
 
-//app.options('/*', cors());
+app.options('*', cors());
 
 app.listen(port, () => {
     console.log(`♻️  Server run on http://localhost:${port}`);
