@@ -17,7 +17,11 @@ const app = express();
 
 app.use(
     cors({
-        origin: "http://localhost:5000",
+        origin: [
+            "http://localhost:5000",
+            "https://maincharacterapp.pages.dev",
+            "https://maincharacters.org"
+        ],
         credentials: true,
     })
 );
