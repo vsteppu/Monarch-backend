@@ -22,6 +22,7 @@ app.use(
             "https://maincharacterapp.pages.dev",
             "https://maincharacters.org"
         ],
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true,
     })
 );
