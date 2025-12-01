@@ -3,6 +3,7 @@ import express from "express";
 import loginController from "../controllers/login-controller.js"
 import authTokenValidation from "../middleware/auth-token-validation.js"
 import User from "../models/User.js";
+import bcrypt from "bcrypt"
 
 const router = express.Router();
 
