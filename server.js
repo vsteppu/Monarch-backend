@@ -26,8 +26,8 @@ app.use(cookieParser())
 app.use(express.json());
 
 
+app.get("/user", authUser);
 app.post("/login", authUser);
-app.post("/user", authUser);
 app.post("/register", authUser);
 
 app.get("/get-exercises", dailyExercises);

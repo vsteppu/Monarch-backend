@@ -1,27 +1,36 @@
 // controllers/login-controller.js
 import User from "../models/User.js";
+import UserParameters from "../models/UserParameters.js";
 import bcrypt from "bcrypt";
 
-const loginController = async(credetials) => {
-    const { name, email, password } = credetials;
+const registerController = async(req, res) => {
+    const { name, email, password } = req.body;
 
     try {
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) return res.status(400).json({ message: 'User already exists' });
-        
-        const hash = await bcrypt.hash(password, 10);
+        const isUserCreated = await User.findOne({ where: { email } });
 
-        const newUser = await User.create({ 
-            name,
-            email,
-            password: hash,
-        });
+        if (isUserCreated) {
+            return res.status(400).json({ message: 'User already exists' })
+        }
+
+        const hash = await bcrypt.hash(password, 10);
         
-        return newUser
+        await User.create({ name, email, password: hash });
+        const createdUser = await User.findOne({ where: { email } });
+        const userId = createdUser?.dataValues?.id
+
+        await UserParameters.create({ user_id: userId });
+        const meta = await UserParameters.findOne({where: { user_id: userId }});
+
+        return res.status(201).json({ 
+                user: { ...createdUser?.dataValues, meta },
+                success: true,
+                message: 'New User was successfully created!'
+            }
+        )
     } catch (err) {
-        console.error(err);
-        res.status(500).json({ success: false, message: "Server error" });
+        return res.status(500).json({ success: false, message: 'Server error' });
     }
 };
 
-export default loginController;
+export default registerController;

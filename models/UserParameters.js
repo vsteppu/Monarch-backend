@@ -3,7 +3,11 @@ import sequelize from '../config/db.js'
 
 const UserParameters = sequelize.define(
     'UserParameters',
-    {
+    {   
+        user_id: {
+            type: DataTypes.UUID,
+            defaultValue: DataTypes.UUIDV4,
+        },
         level:{
             type:DataTypes.INTEGER,
             allowNull: false,
@@ -17,13 +21,11 @@ const UserParameters = sequelize.define(
         status:{
             type:DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'e',
+            defaultValue: 'begginer',
         },
     },
     {
         tableName: 'user_parameters',
-        timestamps: true,
-        paranoid: true,
         underscored: true,
     }
 )

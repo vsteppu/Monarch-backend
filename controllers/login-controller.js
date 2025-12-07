@@ -1,30 +1,41 @@
 // controllers/login-controller.js
 import User from "../models/User.js";
+import UserParameters from "../models/UserParameters.js";
+import authTokenValidation from "../middleware/auth-token-validation.js"
 import bcrypt from "bcrypt";
 
-const loginController = async(credetials) => {
-    const { email, password } = credetials;
+const loginController = async (req, res) => {
+    const { email, password, token } = req.body;
 
     try {
         const existingUser = await User.findOne({ where: { email } });
 
-        if (!existingUser) {
-            res.status(404).json({ success: false, message: "User Not found" });
-            return;
-        }
+        const userId = existingUser?.dataValues?.id
         const storedPasword = existingUser?.dataValues?.password;
+        
+        if (!existingUser) {
+            return res.status(404).json({ success: false, message: "User Not found" });
+        }
 
         const passwordPassed = await bcrypt.compare(password, storedPasword);
+        const tokenValidated = await authTokenValidation(token)
+        const meta = await UserParameters.findOne({ where: { user_id: userId } });
+
+        if (!tokenValidated.success) {
+            return res.status(403).json({ success: false, message: "Turnstile validation failed" });
+        }
+
         if (!passwordPassed) {
-            res.status(401).json({ success: false, message: "Invalid password" })
-            return;
+            return res.status(401).json({ success: false, message: "Invalid password" });
         };
         
-        return existingUser
+        if (existingUser && passwordPassed && tokenValidated.success) {
+            return res.status(200).json({ success: true, user: {...existingUser?.dataValues, meta} });
+        }
     } catch (err) {
         console.error(err);
-        res.status(500).json({ success: false, message: err.message });
+        return res.status(500).json({ success: false, message: "Server errors" });
     }
-};
+}
 
-export default loginController;
+export default loginController
