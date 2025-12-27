@@ -1,1 +1,3 @@
 # Monarch-backend
+creating a migration
+npx sequelize-cli migration:generate --name [name_of_your_migration]

@@ -30,7 +30,7 @@ const loginController = async (req, res) => {
         };
         
         if (existingUser && passwordPassed && tokenValidated.success) {
-            return res.status(200).json({ success: true, user: {...existingUser?.dataValues, meta} });
+            return res.status(200).json({ success: true, user: {...existingUser?.dataValues, ...meta} });
         }
     } catch (err) {
         console.error(err);

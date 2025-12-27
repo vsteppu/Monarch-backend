@@ -8,21 +8,7 @@ import {
 
 const router = express.Router();
 
-router.get("/get-exercises", async(req, res) => {
-    try{
-        const response = await getExercises()
-        res.status(200).json({ 
-            success: true,
-            exercises: response,
-        })
-    } catch (err) {
-        res.status(400).json({ 
-            success: false,
-            message: err.message
-        })
-
-    }
-})
+router.get("/get-exercises", getExercises)
 
 router.post("/add-exercises", async(req, res) => {
     try{

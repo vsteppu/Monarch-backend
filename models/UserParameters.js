@@ -21,7 +21,7 @@ const UserParameters = sequelize.define(
         status:{
             type:DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'begginer',
+            defaultValue: 'beginner',
         },
     },
     {
