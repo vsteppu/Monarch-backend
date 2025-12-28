@@ -16,7 +16,6 @@ app.use(
             "http://localhost:5000",
             "https://maincharacterapp.pages.dev",
             "https://maincharacters.org",
-            "https://monarch-backend-production-0a7c.up.railway.app/login"
         ],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true,
