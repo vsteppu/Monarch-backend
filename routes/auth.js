@@ -8,7 +8,7 @@ import getUserController from "../controllers/get-user-controller.js";
 const router = express.Router();
 
 router.post('/register', registerController);
-router.post("/login", loginController);
+router.post(`/login`, loginController);
 
 router.get('/user', getUserController);
 

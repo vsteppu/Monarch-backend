@@ -6,6 +6,8 @@ import bcrypt from "bcrypt";
 
 const loginController = async (req, res) => {
     const { email, password, token } = req.body;
+    //let email = "vurado@gmail.com"
+    //let password = "123456Aa."
 
     try {
         const existingUser = await User.findOne({ where: { email } });
@@ -20,6 +22,7 @@ const loginController = async (req, res) => {
         const passwordPassed = await bcrypt.compare(password, storedPasword);
         const tokenValidated = await authTokenValidation(token)
         const meta = await UserParameters.findOne({ where: { user_id: userId } });
+        console.log('meta: ', meta);
 
         if (!tokenValidated.success) {
             return res.status(403).json({ success: false, message: "Turnstile validation failed" });
@@ -30,7 +33,13 @@ const loginController = async (req, res) => {
         };
         
         if (existingUser && passwordPassed && tokenValidated.success) {
-            return res.status(200).json({ success: true, user: {...existingUser?.dataValues, ...meta} });
+            return res.status(200).json({
+                success: true,
+                user: {
+                    ...existingUser.toJSON(),
+                    meta: meta ? meta.toJSON() : null
+                    }
+                })
         }
     } catch (err) {
         console.error(err);

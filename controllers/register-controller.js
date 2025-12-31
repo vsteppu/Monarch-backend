@@ -23,7 +23,7 @@ const registerController = async(req, res) => {
         const meta = await UserParameters.findOne({where: { user_id: userId }});
 
         return res.status(201).json({ 
-                user: { ...createdUser?.dataValues, meta },
+                user: { ...createdUser, meta: meta },
                 success: true,
                 message: 'New User was successfully created!'
             }
