@@ -23,9 +23,10 @@ export const getExercises = async(req, res) => {
     }
 };
 
-export const postExercises = async(data) => {
-    console.log('data: ', data);
-    const { user_id, exercises } = data
+export const postExercises = async(req, res) => {
+    const { user_id, exercises } = req.body
+    console.log('exercises: ', exercises);
+    console.log('user_id: ', user_id);
     try {
         const addDailyExercises = await DailyExercise.create({
             user_id,
@@ -34,11 +35,9 @@ export const postExercises = async(data) => {
         
         if (!addDailyExercises) {
             res.status(404).json({ success: false, message: "Can't add new exercises" });
-            return;
+        } else {
+            res.status(200).json({ success: true, exercises: addDailyExercises,})
         }
-
-        await addDailyExercises.save()
-        return addDailyExercises
     } catch (err) {
         console.error(err);
         res.status(500).json({ success: false, message: "Server error #2" });

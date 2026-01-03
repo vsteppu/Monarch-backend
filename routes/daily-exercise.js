@@ -10,21 +10,7 @@ const router = express.Router();
 
 router.get("/get-exercises", getExercises)
 
-router.post("/add-exercises", async(req, res) => {
-    try{
-        const response = await postExercises(req.body)
-        res.status(200).json({ 
-            success: true,
-            exercises: response,
-        })
-    } catch (err) {
-        res.status(400).json({ 
-            success: false,
-            message: err.message
-        })
-
-    }
-})
+router.post("/add-exercises", postExercises)
 
 router.delete("/delete-exercise/:id", async(req, res) => {
     const { id } = req.params
