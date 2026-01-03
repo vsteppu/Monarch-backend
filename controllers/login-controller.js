@@ -10,19 +10,18 @@ const loginController = async (req, res) => {
     //let password = "123456Aa."
 
     try {
-        const existingUser = await User.findOne({ where: { email } });
+        const user = await User.findOne({ where: { email } });
 
-        const userId = existingUser?.dataValues?.id
-        const storedPasword = existingUser?.dataValues?.password;
+        const userId = user?.dataValues?.id
+        const storedPasword = user?.dataValues?.password;
         
-        if (!existingUser) {
+        if (!user) {
             return res.status(404).json({ success: false, message: "User Not found" });
         }
 
         const passwordPassed = await bcrypt.compare(password, storedPasword);
         const tokenValidated = await authTokenValidation(token)
         const meta = await UserParameters.findOne({ where: { user_id: userId } });
-        console.log('meta: ', meta);
 
         if (!tokenValidated.success) {
             return res.status(403).json({ success: false, message: "Turnstile validation failed" });
@@ -32,13 +31,10 @@ const loginController = async (req, res) => {
             return res.status(401).json({ success: false, message: "Invalid password" });
         };
         
-        if (existingUser && passwordPassed && tokenValidated.success) {
+        if (user && passwordPassed && tokenValidated.success) {
             return res.status(200).json({
                 success: true,
-                user: {
-                    ...existingUser.toJSON(),
-                    meta: meta ? meta.toJSON() : null
-                    }
+                user
                 })
         }
     } catch (err) {

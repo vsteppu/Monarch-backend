@@ -1,0 +1,61 @@
+/**
+ * For more details on how to configure Wrangler, refer to:
+ * https://developers.cloudflare.com/workers/wrangler/configuration/
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "express-d1-app",
+	"main": "server.js",
+	"compatibility_date": "2026-01-03",
+	"observability": {
+		"enabled": true
+	},
+	/**
+	 * Smart Placement
+	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+	 */
+	// "placement": {  "mode": "smart" }
+	/**
+	 * Bindings
+	 * Bindings allow your Worker to interact with resources on the Cloudflare Developer Platform, including
+	 * databases, object storage, AI inference, real-time communication and more.
+	 * https://developers.cloudflare.com/workers/runtime-apis/bindings/
+	 */
+	/**
+	 * Environment Variables
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+	 * Note: Use secrets to store sensitive data.
+	 * https://developers.cloudflare.com/workers/configuration/secrets/
+	 */
+	"vars": {  
+        "MY_VARIABLE": "production_value",
+        "SUPPRESS_NO_CONFIG_WARNING":"true",
+        "NODE_ENV":"development",
+        "PORT":"9000",
+        "HOST":"localhost",
+        "PASSWORD":"wonsultinai",
+        "DB_CONNECTION":"mysql",
+        "DB_HOST":"127.0.0.1",
+        "DB_PORT":"3306",
+        "DB_DATABASE":"level_up",
+        "DB_USERNAME":"root",
+        "DB_PASSWORD":"wonsultingai",
+        "GOOGLE_RECAPTCHA_ENABLED":"false",
+        //"GOOGLE_SECRET_KEY_V3":6Ld_3w0sAAAAADdX80o5eogYZzsn-XqUGZsCQ6Nb,
+        "GOOGLE_SECRET_KEY":"6Ldhsg4sAAAAANdprlq1iXTAYz7ukwPDY2u8LaQQ",
+        "TELEGRAM_BOT_TEST_CONFIGURATION":"149.154.167.40:443",
+        "TELEGRAM_BOT_TEST_PUBLIC_KEY":"MIIBCgKCAQEAyMEdY1aR+sCR3ZSJrtztKTKqigvO/vBfqACJLZtS7QMgCGXJ6XIRyy7mx66W0/sOFa7/1mAZtEoIokDP3ShoqF4fVNb6XeqgQfaUHd8wJpDWHcR2OFwvplUUI1PLTktZ9uW2WE23b+ixNwJjJGwBDJPQEQFBE+vfmH0JP503wr5INS1poWg/j25sIWeYPHYeOrFp/eXaqhISP6G+q2IeTaWTXpwZj4LzXq5YOpk4bYEQ6mvRq7D1aHWfYmlEGepfaYR8Q0YqvvhYtMte3ITnuSJs171+GDqpdKcSwHnd6FudwGO4pcCOj4WcDuXc2CTHgH8gFTNhp/Y8/SpDOhvn9QIDAQAB",
+        "TELEGRAM_BOT_TEST_PRODUCTION":"149.154.167.50:443",
+        "TELEGRAM_BOT_PUBLIC_KEY":"MIIBCgKCAQEA6LszBcC1LGzyr992NzE0ieY+BSaOW622Aa9Bd4ZHLl+TuFQ4lo4g5nKaMBwK/BIb9xUfg0Q29/2mgIR6Zr9krM7HjuIcCzFvDtr+L0GQjae9H0pRB2OO62cECs5HKhT5DZ98K33vmWiLowc621dQuwKWSQKjWf50XYFw42h21P2KXUGyp2y/+aEyZ+uVgLLQbRA1dEjSDZ2iGRy12Mk5gpYc397aYp438fsJoHIgJ2lgMv5h7WY9t6N/byY9Nw9p21Og3AoXSL2q/2IJ1WRUhebgAdGVMlV1fkuOQoEzR7EdpqtQD9Cs5+bfo3Nhmcyvk5ftB0WkJ9z6bNZ7yxrP8wIDAQAB",
+    }
+	/**
+	 * Static Assets
+	 * https://developers.cloudflare.com/workers/static-assets/binding/
+	 */
+	// "assets": {  "directory": "./public/",  "binding": "ASSETS" }
+	/**
+	 * Service Bindings (communicate between multiple Workers)
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+	 */
+	// "services": [  {   "binding": "MY_SERVICE",   "service": "my-service"  } ]
+}
