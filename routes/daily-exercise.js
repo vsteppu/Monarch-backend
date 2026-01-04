@@ -3,14 +3,17 @@ import {
     getExercises,
     postExercises,
     deleteExercise,
-    deleteAllExercises
+    deleteAllExercises,
+    getExercisesByDay
 } from '../controllers/daily-exercise-controller.js'
 
 const router = express.Router();
 
 router.get("/get-exercises", getExercises)
+router.get("/get-exercises-by-day", getExercisesByDay)
 
 router.post("/add-exercises", postExercises)
+
 
 router.delete("/delete-exercise/:id", async(req, res) => {
     const { id } = req.params

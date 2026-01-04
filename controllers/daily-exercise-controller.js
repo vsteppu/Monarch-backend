@@ -4,7 +4,6 @@ import User from "../models/User.js"
 
 export const getExercises = async(req, res) => {
     const userId = req.query.id
-    console.log('userId: ', userId);
     try {
         const exercises = await DailyExercise.findAll();
         const listById = exercises.filter(el => el.dataValues.user_id == userId)
@@ -16,6 +15,32 @@ export const getExercises = async(req, res) => {
         return res.status(200).json({ 
             success: true,
             exercises: listById,
+        })
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Server error #1" });
+    }
+};
+
+export const getExercisesByDay = async(req, res) => {
+    const { id, date } = req.query
+    console.log('date: ', date);
+    try {
+        const exercises = await DailyExercise.findAll({where: {user_id: id}});
+
+        const filteredEx = exercises.filter(item => {
+            const storedDate = new Date(item?.dataValues?.createdAt).toDateString()
+            return storedDate === date
+        })
+        console.log('filteredEx: ', filteredEx);
+
+        if (!exercises) {
+            res.status(404).json({ success: false, message: "Exercises not found" });
+            return;
+        }
+        return res.status(200).json({ 
+            success: true,
+            exercises: filteredEx
         })
     } catch (err) {
         console.error(err);

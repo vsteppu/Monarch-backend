@@ -40,11 +40,13 @@ app.use(express.json());
 
 app.get(`/user`, authUser);
 app.get(`/parameters`, authUser);
+app.get(`/get-exercises`, dailyExercises);
+app.get(`/get-exercises-by-day`, dailyExercises);
+
 app.post(`/login`, authUser);
 app.post(`/register`, authUser);
-
-app.get(`/get-exercises`, dailyExercises);
 app.post(`/add-exercises`, dailyExercises);
+
 app.delete(`/delete-exercise`, dailyExercises);
 app.delete(`/delete-all-exercises`, dailyExercises);
 

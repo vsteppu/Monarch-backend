@@ -3,7 +3,6 @@ import User from "../models/User.js";
 
 const getUserController = async (req, res) => {
     const { id } = req.query;
-    console.log('id: ', id);
 
     try {
         const user = await User.findOne({ where: { id } });
