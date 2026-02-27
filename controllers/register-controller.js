@@ -1,35 +1,37 @@
 // controllers/login-controller.js
-import User from "../models/User.js";
-import UserParameters from "../models/UserParameters.js";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
+import { initUsersTable, createUser } from "../models/User.js";
 
-const registerController = async(req, res) => {
-    const { name, email, password } = req.body;
-
+const registerController = async (c) => {
+    const env = c.env;
+    const { name, email, password } = await c.req.json();
+    
     try {
-        const isUserCreated = await User.findOne({ where: { email } });
+        await initUsersTable(env.monarch_db);
 
-        if (isUserCreated) {
-            return res.status(400).json({ message: 'User already exists' })
+        // bcryptjs: use synchronous or async API; using sync for simplicity here
+        const hash = bcrypt.hashSync(password, 10);
+        console.log('hash: ', hash);
+
+        const registerUser = { name, email, password: hash };
+        console.log('registerUser: ', registerUser);
+
+        const createdUser = await createUser(env.monarch_db, registerUser);
+        console.log('createdUser: ', createdUser);
+
+        if (!createdUser) {
+            return c.json({ message: 'User already exists' });
         }
-
-        const hash = await bcrypt.hash(password, 10);
-        
-        await User.create({ name, email, password: hash });
-        const createdUser = await User.findOne({ where: { email } });
-        const userId = createdUser?.dataValues?.id
-
-        await UserParameters.create({ user_id: userId });
-        const meta = await UserParameters.findOne({where: { user_id: userId }});
-
-        return res.status(201).json({ 
-                user: { ...createdUser, meta: meta },
-                success: true,
-                message: 'New User was successfully created!'
-            }
-        )
+        c.status(201);
+        return c.json({
+            user: createdUser,
+            success: true,
+            message: 'New User was successfully created!',
+            status: 201
+        });
     } catch (err) {
-        return res.status(500).json({ success: false, message: 'Server error' });
+        c.status(500);
+        return c.json({ success: false, message: 'Server error' });
     }
 };
 
