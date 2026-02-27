@@ -1,22 +1,21 @@
 // controllers/login-controller.js
+import { getUserById } from "../models/User.js";
 
-const getUserController = async (c) => {
-    console.log('this is it');
-    const response = 'this is it'
-    return response;
-    /* const { id } = req.query;
+const deleteController = async (c) => {
+    const id = c.req.param('id');
+
     try {
-        const user = await User.findOne({ where: { id } });
+        const response = await getUserById(c.env.MONARCH_DB, id);
 
-        if (!user) {
-            res.status(404).json({ message: 'User not found' });
-            return;
+        if (!response) {
+            return c.json({success: true, message: "User was succesfully deleted"})
+        } else {
+            return c.json({success: false, message: "User wasn't deleted"})
         }
-
-        res.status(200).json(user);
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
-    } */
+        console.error(err);
+        return c.json({ success: false, message: "Server errors" });
+    }
 }
 
-export default getUserController;
+export default deleteController;
