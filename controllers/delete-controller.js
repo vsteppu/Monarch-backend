@@ -29,4 +29,3 @@ const deleteController = async (c) => {
 };
 
 export default deleteController;
-ƒ
