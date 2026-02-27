@@ -7,17 +7,12 @@ const registerController = async (c) => {
     const { name, email, password } = await c.req.json();
     
     try {
-        await initUsersTable(env.monarch_db);
+        await initUsersTable(env.MONARCH_DB);
 
         // bcryptjs: use synchronous or async API; using sync for simplicity here
         const hash = bcrypt.hashSync(password, 10);
-        console.log('hash: ', hash);
-
         const registerUser = { name, email, password: hash };
-        console.log('registerUser: ', registerUser);
-
-        const createdUser = await createUser(env.monarch_db, registerUser);
-        console.log('createdUser: ', createdUser);
+        const createdUser = await createUser(env.MONARCH_DB, registerUser);
 
         if (!createdUser) {
             return c.json({ message: 'User already exists' });

@@ -47,8 +47,20 @@ export const createUser = async (db, { name, email, password }) => {
     return response;
 };
 
+export const authenticateUser = async (db, { email, password }) => {
+    const sql = `
+        SELECT * FROM users WHERE email = ? LIMIT 1
+    `;
+    const user = await db.prepare(sql).bind(email).first();
+    if (!user) return null;
+
+    const isValid = bcrypt.compareSync(password, user.password);
+    return isValid ? user : null;
+};
+
 export default {
     createUsersTableSQL,
     initUsersTable,
     createUser,
+    authenticateUser,
 };
