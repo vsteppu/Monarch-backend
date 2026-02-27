@@ -17,7 +17,7 @@ jobs:
 
       - name: Deploy based on branch
         run: |
-          if [ "${GITHUB_REF##*/}" = "dev" ]; then
+          if [ "${GITHUB_REF##*/}" = "develop" ]; then
             npx wrangler deploy --env development
           else
             npx wrangler deploy --env production
