@@ -1,48 +1,32 @@
 // controllers/login-controller.js
-//import User from "../models/User.js";
-//import UserParameters from "../models/UserParameters.js";
-//import authTokenValidation from "../middleware/auth-token-validation.js"
-//import bcrypt from "bcrypt";
+import { deleteUser, getUserById } from "../models/User.js";
 
-const loginController = async (c) => {
-    const { email, password } = await c.req.json()
-     
+const deleteController = async (c) => {
+    const id = c.req.param("id");
+
     try {
-        const existingUser = await User.findOne({ where: { email } });
+        await deleteUser(c.env.MONARCH_DB, id);
+        const response = await getUserById(c.env.MONARCH_DB, id);
 
-        const userId = existingUser?.dataValues?.id
-        const storedPasword = existingUser?.dataValues?.password;
-        
-        if (!existingUser) {
-            return res.status(404).json({ success: false, message: "User Not found" });
-        }
-
-        const passwordPassed = await bcrypt.compare(password, storedPasword);
-        const tokenValidated = await authTokenValidation(token)
-        const meta = await UserParameters.findOne({ where: { user_id: userId } });
-        console.log('meta: ', meta);
-
-        if (!tokenValidated.success) {
-            return res.status(403).json({ success: false, message: "Turnstile validation failed" });
-        }
-
-        if (!passwordPassed) {
-            return res.status(401).json({ success: false, message: "Invalid password" });
-        };
-        
-        if (existingUser && passwordPassed && tokenValidated.success) {
-            return res.status(200).json({
+        if (!response) {
+            return c.json({
                 success: true,
-                user: {
-                    ...existingUser.toJSON(),
-                    meta: meta ? meta.toJSON() : null
-                    }
-                })
+                message: "User was succesfully deleted",
+            });
+        } else {
+            return c.json({
+                success: false,
+                message: "User wasn't deleted",
+            });
         }
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ success: false, message: "Server errors" });
+        return c.json({
+            success: false,
+            message: "Server errors"
+        });
     }
-}
+};
 
-export default loginController
+export default deleteController;
+ƒ

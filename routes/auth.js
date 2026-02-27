@@ -10,6 +10,6 @@ const router = new Hono();
 router.post(`/register-user`, registerController);
 router.post(`/login-user`, loginController);
 router.post(`/get-user`, getUserController);
-router.post(`/delete-user`, deleteController);
+router.delete(`/delete-user/:id`, deleteController);
 
 export default router;
