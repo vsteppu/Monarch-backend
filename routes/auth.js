@@ -1,17 +1,15 @@
-// routes/login.js
-import express from "express";
-import loginController from "../controllers/login-controller.js"
-import registerController from "../controllers/register-controller.js"
-import getUserController from "../controllers/get-user-controller.js";
-import getUserParametersController from "../controllers/get-user-parameters-controller.js";
+import { Hono } from "hono";
 
-const router = express.Router();
+import registerController from '../controllers/register-controller.js'
+import loginController from '../controllers/login-controller.js'
+import getUserController from '../controllers/get-user-controller.js'
+import deleteController from '../controllers/delete-controller.js'
 
-router.get(`/user`, getUserController);
-router.get(`/parameters`, getUserParametersController);
+const router = new Hono();
 
-router.post(`/register`, registerController);
-router.post(`/login`, loginController);
-
+router.post(`/register-user`, registerController);
+router.post(`/login-user`, loginController);
+router.post(`/get-user`, getUserController);
+router.post(`/delete-user`, deleteController);
 
 export default router;

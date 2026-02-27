@@ -11,7 +11,7 @@ export const setJWT = (req, res) => {
     httpOnly: true,       // cant be accessed with JS
     secure: true,         // only through HTTPS
     sameSite: 'strict',   // prevent sending through sites
-    maxAge: 60 * 1000,      // 1 hour
+    maxAge: 60 * 1000,    // 1 hour
   })
 
   res.json({ success: true, message: 'User logged in' })
