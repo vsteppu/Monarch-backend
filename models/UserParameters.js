@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize'
+/* import { DataTypes } from 'sequelize'
 import sequelize from '../config/db.js'
 
 const UserParameters = sequelize.define(
@@ -30,4 +30,4 @@ const UserParameters = sequelize.define(
     }
 )
 
-export default UserParameters
+export default UserParameters */
