@@ -10,5 +10,4 @@ app.use('*', cors({
 }))
 
 app.route(`/`, auth);
-
 export default app;
