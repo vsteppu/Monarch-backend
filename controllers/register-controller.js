@@ -1,4 +1,4 @@
-// controllers/login-controller.js
+// controllers/register-controller.js
 import bcrypt from "bcryptjs";
 import { initUsersTable, createUser } from "../models/User.js";
 
@@ -10,22 +10,23 @@ const registerController = async (c) => {
 
         const hash = bcrypt.hashSync(password, 10);
 
-        const registerUser = { name, email, password: hash };
+        const credentials = { name, email, password: hash };
 
-        const createdUser = await createUser(c.env.MONARCH_DB, registerUser);
+        const newUser = await createUser(c.env.MONARCH_DB, credentials);
 
-        if (!createdUser) {
+        if (!newUser) {
             return c.json({
                 message: 'User already exists',
                 success: false
             });
+        } else {
+            c.status(201);
+            return c.json({
+                message: 'New User was successfully created!',
+                success: true,
+                user: newUser,
+            });
         }
-        c.status(201);
-        return c.json({
-            message: 'New User was successfully created!',
-            success: true,
-            user: createdUser,
-        });
     } catch (err) {
         c.status(500);
         return c.json({

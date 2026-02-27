@@ -1,4 +1,4 @@
-// controllers/login-controller.js
+// controllers/delete-controller.js
 import { deleteUser, getUserById } from "../models/User.js";
 
 const deleteController = async (c) => {
