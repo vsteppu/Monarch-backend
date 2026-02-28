@@ -90,6 +90,7 @@ out
 
 # VS Code testing
 .vscode-test
+requests.rest
 
 # Wrangler / Cloudflare
 .wrangler/

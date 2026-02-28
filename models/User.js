@@ -7,20 +7,21 @@ import { randomUUID } from "crypto";
  * - timestamps and soft-delete (deleted_at)
  */
 export const createUsersTableSQL = `
-	CREATE TABLE IF NOT EXISTS users (
-	id TEXT PRIMARY KEY,
-	name TEXT NOT NULL,
-	email TEXT NOT NULL,
-	password TEXT NOT NULL,
+    CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
     level INTEGER NOT NULL DEFAULT 1,
     rank TEXT NOT NULL DEFAULT e,
     status TEXT NOT NULL DEFAULT beginner,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-	deleted_at TIMESTAMP
-	);
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP
+    );
 `;
 
+/* Prepared SQL statements used by the model helpers */
 const sql = {
     create: `
         INSERT INTO users (name, email, password, id, created_at, updated_at)
@@ -38,10 +39,11 @@ const sql = {
     delete: `
         DELETE FROM users WHERE id = ?
     `
-}
+};
 
 /**
  * Initialize the users table on a D1 binding.
+ * Role: Ensure the users table exists before performing CRUD operations.
  * Usage: await initUsersTable(env.DB)
  */
 export const initUsersTable = async (db) => {
@@ -50,19 +52,26 @@ export const initUsersTable = async (db) => {
 
 /**
  * Simple helper to create a user row in D1.
- * Generates a UUID for id if not provided.
- * Returns the inserted record id and fields (does not return hashed password or fetched row).
+ * Role: Insert a new user, generating a UUID for id, then return the inserted user record.
+ * Note: Expects password to already be hashed.
  */
 export const createUser = async (db, { name, email, password }) => {
     const id = randomUUID();
 
-    const response = await db
+    await db
         .prepare(sql.create)
         .bind(name, email, password, id)
         .run();
-    return response;
+
+    const user = await authenticateUser(db, email);
+    return user;
 };
 
+/**
+ * Fetch a user by email.
+ * Role: Query the users table for the first record matching the given email.
+ * Returns the full row or undefined if not found.
+ */
 export const authenticateUser = async (db, email) => {
     const response = await db
         .prepare(sql.readByEmail)
@@ -72,6 +81,10 @@ export const authenticateUser = async (db, email) => {
     return response;
 };
 
+/**
+ * Fetch a user by id.
+ * Role: Retrieve a single user row by its UUID primary key.
+ */
 export const getUserById = async (db, id) => {
     const response = await db
         .prepare(sql.readById)
@@ -81,6 +94,10 @@ export const getUserById = async (db, id) => {
     return response;
 };
 
+/**
+ * Update a user's fields by id.
+ * Role: Update name, email, and password for the specified user and return the DB response.
+ */
 export const updateUser = async (db, id, { name, email, password }) => {
     const response = await db
         .prepare(sql.update)
@@ -90,17 +107,13 @@ export const updateUser = async (db, id, { name, email, password }) => {
     return response;
 };
 
+/**
+ * Delete a user by id.
+ * Role: Remove the user row with the given id and return the DB response.
+ */
 export const deleteUser = (db, id) => {
     return db
         .prepare(sql.delete)
         .bind(id)
         .run();
-};
-
-export default {
-    createUsersTableSQL,
-    initUsersTable,
-    createUser,
-    authenticateUser,
-    getUserById,
 };

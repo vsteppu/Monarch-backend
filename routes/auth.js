@@ -7,9 +7,9 @@ import deleteController from '../controllers/delete-controller.js'
 
 const router = new Hono();
 
-router.post(`/register-user`, registerController);
-router.post(`/login-user`, loginController);
-router.post(`/get-user`, getUserController);
-router.delete(`/delete-user/:id`, deleteController);
+router.post(`/register`, registerController);
+router.post(`/login`, loginController);
+router.get(`/get-user/:id`, getUserController);
+router.delete(`/delete/:id`, deleteController);
 
 export default router;

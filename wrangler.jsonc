@@ -16,26 +16,15 @@
 	"dev": {
 		"port": 9000,
 	},
-    "env":{
-        "development": {
-            "d1_databases": [
-                {
-                    "binding": "MONARCH_DB",
-                    "database_name": "monarch-db",
-                    "database_id": "14d1bea3-4672-4724-865d-768dc17ad5bf"
-                }
-            ]
-        },
-        "production": {
-            "d1_databases": [
-                {
-                    "binding": "MONARCH_DB",
-                    "database_name": "monarch-db-prod",
-                    "database_id": "f695fe4f-07ed-4538-9268-ca8c64bb379c"
-                }
-            ]
+    "d1_databases": [
+        {
+            "binding": "MONARCH_DB",
+            "database_name": "monarch-db",
+            "database_id": "14d1bea3-4672-4724-865d-768dc17ad5bf"
         }
-    },
+    ],
+    //"env":{
+    //},
 	
 	/**
 	 * Smart Placement
@@ -54,9 +43,9 @@
 	 * Note: Use secrets to store sensitive data.
 	 * https://developers.cloudflare.com/workers/configuration/secrets/
 	 */
-	// "vars": {  
-    //      "MY_VARIABLE": "production_value"
-    //  }
+	//"vars": {
+    //    "JWT_SECRET": "<JWT_SECRET>"
+    //}
 	/**
 	 * Static Assets
 	 * https://developers.cloudflare.com/workers/static-assets/binding/
