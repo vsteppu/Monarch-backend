@@ -6,7 +6,7 @@ const getUserController = async (c) => {
     const id = c.req.param('id');
 
     try {
-        const response = await getUserById(c.env.MONARCH_DB, id);
+        const response = await getUserById(id);
 
         if (!response) {
             c.status(404);

@@ -5,8 +5,8 @@ const deleteController = async (c) => {
     const id = c.req.param("id");
 
     try {
-        await deleteUser(c.env.MONARCH_DB, id);
-        const response = await getUserById(c.env.MONARCH_DB, id);
+        await deleteUser(id);
+        const response = await getUserById(id);
 
         if (!response) {
             return c.json({

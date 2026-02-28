@@ -6,13 +6,13 @@ const registerController = async (c) => {
     const { name, email, password } = await c.req.json();
     
     try {
-        await initUsersTable(c.env.MONARCH_DB);
+        await initUsersTable();
 
         const hash = bcrypt.hashSync(password, 10);
 
         const credentials = { name, email, password: hash };
 
-        const newUser = await createUser(c.env.MONARCH_DB, credentials);
+        const newUser = await createUser(credentials);
 
         if (!newUser) {
             return c.json({
