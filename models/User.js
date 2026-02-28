@@ -1,4 +1,7 @@
 import { randomUUID } from "crypto";
+import { env } from "cloudflare:workers";
+
+export const db = env.MONARCH_DB;
 
 /**
  * SQL DDL for Cloudflare D1 to mirror the Sequelize User model.
@@ -46,7 +49,7 @@ const sql = {
  * Role: Ensure the users table exists before performing CRUD operations.
  * Usage: await initUsersTable(env.DB)
  */
-export const initUsersTable = async (db) => {
+export const initUsersTable = async () => {
     await db.prepare(createUsersTableSQL).run();
 };
 
@@ -55,7 +58,7 @@ export const initUsersTable = async (db) => {
  * Role: Insert a new user, generating a UUID for id, then return the inserted user record.
  * Note: Expects password to already be hashed.
  */
-export const createUser = async (db, { name, email, password }) => {
+export const createUser = async ({ name, email, password }) => {
     const id = randomUUID();
 
     await db
@@ -72,7 +75,7 @@ export const createUser = async (db, { name, email, password }) => {
  * Role: Query the users table for the first record matching the given email.
  * Returns the full row or undefined if not found.
  */
-export const authenticateUser = async (db, email) => {
+export const authenticateUser = async (email) => {
     const response = await db
         .prepare(sql.readByEmail)
         .bind(email)
@@ -85,7 +88,7 @@ export const authenticateUser = async (db, email) => {
  * Fetch a user by id.
  * Role: Retrieve a single user row by its UUID primary key.
  */
-export const getUserById = async (db, id) => {
+export const getUserById = async (id) => {
     const response = await db
         .prepare(sql.readById)
         .bind(id)
@@ -98,7 +101,7 @@ export const getUserById = async (db, id) => {
  * Update a user's fields by id.
  * Role: Update name, email, and password for the specified user and return the DB response.
  */
-export const updateUser = async (db, id, { name, email, password }) => {
+export const updateUser = async (id, { name, email, password }) => {
     const response = await db
         .prepare(sql.update)
         .bind(name, email, password, id)
@@ -111,7 +114,7 @@ export const updateUser = async (db, id, { name, email, password }) => {
  * Delete a user by id.
  * Role: Remove the user row with the given id and return the DB response.
  */
-export const deleteUser = (db, id) => {
+export const deleteUser = (id) => {
     return db
         .prepare(sql.delete)
         .bind(id)

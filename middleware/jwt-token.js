@@ -1,33 +1,23 @@
 import jwt from 'jsonwebtoken'
+import { env } from "cloudflare:workers";
+import { setCookie } from 'hono/cookie'
 
 export const setJWT = async (c) => {
     const { email } = await c.req.json();
-    const jwtSecret = c.env.JWT_SECRET;
-    console.log('jwtSecret: ', jwtSecret);
+    try {
+        const token = jwt.sign( { email }, env.JWT_SECRET, { expiresIn: '1h' } );
 
-    const token = jwt.sign(
-        email,
-        c.env.JWT_SECRET,
-        { expiresIn: '1h' }
-    )
-    console.log('Generated JWT: ', token);
-    
-    c.cookie(
-        'token',
-        token, 
-        {
+        setCookie( c, 'token', token, {
             httpOnly: true,       // cant be accessed with JS
             secure: true,         // only through HTTPS
             sameSite: 'strict',   // prevent sending through sites
             maxAge: 60 * 1000,    // 1 hour
-        }
-    )
+        })
 
-    return c.json({ 
-        success: true,
-        message: 'User logged in',
-        token
-    })
+        return token;
+    } catch (err) {
+        console.error('Error setting JWT: ', err);
+    }
 }
 
 // route protejată
