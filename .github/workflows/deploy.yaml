@@ -17,10 +17,8 @@ jobs:
 
       - name: Deploy based on branch
         run: |
-          if [ "${GITHUB_REF##*/}" = "develop" ]; then
-            npx wrangler deploy --env development
-          else
-            npx wrangler deploy --env production
+          if [ "${GITHUB_REF##*/}" = "production" ]; then
+            npx wrangler deploy
           fi
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
