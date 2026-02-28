@@ -36,8 +36,8 @@ const loginController = async (c) => {
             return c.json({
                 message: 'Login successful',
                 success: true,
+                user,
                 //token,
-                user
             });
         }
     } catch (err) {
