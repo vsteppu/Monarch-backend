@@ -10,4 +10,7 @@ app.use('*', cors({
 }))
 
 app.route(`/`, auth);
+app.get(`/data`, (c) => {
+  	return c.json({ message: 'Hello from /data' });
+});
 export default app;

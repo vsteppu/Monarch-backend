@@ -8,8 +8,8 @@
 		"serve": "nodemon server.js",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"deploy": "wrangler deploy",
-		"dev": "wrangler dev --env development",
-		"db:command": "npx wrangler --env development d1 execute MONARCH_DB --command",
+		"dev": "wrangler dev --local",
+		"db:command": "npx wrangler d1 execute MONARCH_DB --command",
 		"cf-typegen": "wrangler types"
 	},
 	"keywords": [],
