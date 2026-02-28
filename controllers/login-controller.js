@@ -2,13 +2,14 @@
 import bcrypt from "bcryptjs";
 
 import { authenticateUser } from "../models/User.js";
-import { setJWT } from "../middleware/jwt-token.js";
+//import { setJWT } from "../middleware/jwt-token.js";
 
 const loginController = async (c) => {
     const { email,  password } = await c.req.json();
 
     try {
         const user = await authenticateUser(c.env.MONARCH_DB, email);
+        console.log('user: ', user);
 
         if (!user) {
             c.status(404);
@@ -18,21 +19,24 @@ const loginController = async (c) => {
             });
         }
         const passwordIsValid = bcrypt.compareSync(password, user.password);
+        console.log('passwordIsValid: ', passwordIsValid);
 
         if (!passwordIsValid) {
+            console.log('something');
             c.status(401);
             return c.json({
                 message: 'Invalid password',
                 success: false
             });
         } else {
+            console.log('new');
             //const { token } = await setJWT(c);
 
             c.status(200);
             return c.json({
                 message: 'Login successful',
                 success: true,
-                token,
+                //token,
                 user
             });
         }
