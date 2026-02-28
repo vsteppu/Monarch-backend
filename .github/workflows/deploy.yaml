@@ -17,7 +17,7 @@ jobs:
 
       - name: Deploy based on branch
         run: |
-          if [ "${GITHUB_REF##*/}" = "production" ]; then
+          if [ "${GITHUB_REF##*/}" = "main" ]; then
             npx wrangler deploy
           fi
         env:
