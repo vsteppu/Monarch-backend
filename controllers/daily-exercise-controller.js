@@ -2,6 +2,7 @@
 import DailyExercise from "../models/DailyExercise.js";
 import User from "../models/User.js"
 
+
 export const getExercises = async(req, res) => {
     const userId = req.query.id
     try {
